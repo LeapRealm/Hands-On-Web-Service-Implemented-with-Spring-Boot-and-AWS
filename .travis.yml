@@ -13,7 +13,23 @@ cache:
     - '$HOME/.gradle'
 script: "./gradlew clean build"
 
-# CI 실행 완료 시 메일로 알람
+before_deploy:
+  - zip -r Hands-On-Web-Service-Implemented-with-Spring-Boot-and-AWS *
+  - mkdir -p deploy
+  - mv Hands-On-Web-Service-Implemented-with-Spring-Boot-and-AWS.zip deploy/Hands-On-Web-Service-Implemented-with-Spring-Boot-and-AWS.zip
+
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY      # Travis repo settings에 설정된 값
+    secret_access_key: $AWS_SECRET_KEY  # Travis repo settings에 설정된 값
+    bucket: jinwoo-springboot-build     # S3 버킷
+    region: ap-northeast-2
+    skip_cleanup: true
+    acl: private                        # zip 파일 접근을 private로
+    local_dir: deploy                   # before_deploy에서 생성한 디렉토리
+    wait-until-deployed: true
+
+# CI 실행 완료시 메일로 알람
 notifications:
   email:
     recipients:

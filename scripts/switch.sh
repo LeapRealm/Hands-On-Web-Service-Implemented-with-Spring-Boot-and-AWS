@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-ABSPATH=$(readlink -f $0)
-ABSDIR=$(dirname $ABSPATH)
-source ${ABSDIR}/profile.sh
+ABSPATH=$(readlink -f "$0")
+ABSDIR=$(dirname "$ABSPATH")
+source "${ABSDIR}"/profile.sh
 
 function switchProxy() {
     IDLE_PORT=$(findIdlePort)
